@@ -12,6 +12,8 @@ from resources.home import Home
 from resources.stall import Stall, Cam_Status, Lot_Status
 from resources.user_stats import User_Stats
 from resources.predictor import Car_Predictor
+from resources.PC import PC
+from resources.PC_Status import PC_Status
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL','sqlite:///data.db')
@@ -20,9 +22,9 @@ app.secret_key = 'jose'
 api = Api(app)
 
 #Uncommit below if you are running locally
-@app.before_first_request
+'''@app.before_first_request
 def create_tables(): 
-	db.create_all()
+	db.create_all()'''
 
 jwt = JWT(app,authenticate, identity) #/auth
 
@@ -30,6 +32,8 @@ jwt = JWT(app,authenticate, identity) #/auth
 def home(): 
 	return render_template('index.html')'''
 api.add_resource(Car_Predictor,'/predictor')
+api.add_resource(PC,'/pc/<string:host_name>')
+api.add_resource(PC_Status,'/pc_status/<string:pc_id>')
 api.add_resource(Stall,'/stall/<string:lot_id>/<int:stall_id>')
 api.add_resource(Lot_Status,'/lot/<string:lot_id>')
 api.add_resource(Cam_Status,'/cam/<string:lot_id>/<string:cam_id>')
